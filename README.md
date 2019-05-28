@@ -26,7 +26,7 @@ First Simple Calculator with WPF
 - App.xml ("external styles")
 
 ### Known Bugs
-- Decimal
+- Press equal multiple times.
 
 ### Future Enhancement
 - code refactoring
