@@ -6,7 +6,7 @@ First Simple Calculator with WPF
 - Framework: .NET Framework 4.6.1
 - Data: Data of this demo program are stored using object.
 - IDE: Visual Studio Community 2017
-- Library for Bodmas calculation: None. (If you want to use a library, you may try https://www.nuget.org/packages/Rychusoft.NumericalLibraries.Calculator/)
+- Library for Bodmas calculation: None. (If you want to use a library, you may try [Rychusoft.NumericalLibraries.Calculator] (https://www.nuget.org/packages/Rychusoft.NumericalLibraries.Calculator/)
 
 ### Features:
 - [x] Accept number 0-9 key and four math operator keys
@@ -32,5 +32,8 @@ First Simple Calculator with WPF
 ### Future Enhancement
 - code refactoring
 - back 
+
+### Other Versions
+- Calculator with Javascript
 
 [If this content is helpful to you, consider to support and buy me a cup of coffee :) ](https://ko-fi.com/V7V2PN67)
