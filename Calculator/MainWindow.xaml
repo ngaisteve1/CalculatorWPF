@@ -42,12 +42,12 @@
                 Style="{StaticResource additionalButtonsStyle}"
                 Content="+/-"
                 Grid.Row="2"
-                Grid.Column="1"/>
+                Grid.Column="1" IsEnabled="False"/>
         <Button x:Name="percentageButton"
                 Style="{StaticResource additionalButtonsStyle}"
                 Content="%"
                 Grid.Row="2"
-                Grid.Column="2"/>
+                Grid.Column="2" IsEnabled="False"/>
         <Button x:Name="divisionButton"
                 Click="OperationButton_Click"
                 Style="{StaticResource operatorButtonsStyle}"
@@ -134,7 +134,7 @@
                 Style="{StaticResource numberButtonsStyle}"
                 Content="."
                 Grid.Row="6"
-                Grid.Column="2"/>
+                Grid.Column="2" IsEnabled="False"/>
         <Button x:Name="equalButton"
                 Style="{StaticResource operatorButtonsStyle}"
                 Content="="
