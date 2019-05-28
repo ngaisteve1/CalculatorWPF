@@ -11,7 +11,7 @@ First Simple Calculator with WPF
 - [x] Accept number 0-9 key and four math operator keys
 - [x] Keep appending string calculation like in Android stock calculator. Example, 1+2*2
 - [x] Order of calculation is BODMAS. Example, 1+2*2=5 (not 6). For Window calculator, result is 6.
-- [ ] Decimal
+- [x] Decimal
 - [ ] Percentage key
 - [ ] Positive / Negative
 - [ ] Back key
