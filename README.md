@@ -34,6 +34,6 @@ First Simple Calculator with WPF
 - back 
 
 ### Other Versions
-- Calculator with Javascript
+- [Calculator with Javascript](https://github.com/ngaisteve1/Calculator)
 
 [If this content is helpful to you, consider to support and buy me a cup of coffee :) ](https://ko-fi.com/V7V2PN67)
