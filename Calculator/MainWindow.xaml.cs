@@ -88,13 +88,24 @@ namespace Calculator
 
         private void pointButton_Click(object sender, RoutedEventArgs e)
         {
-            if (resultLabel.Content.ToString().Contains("."))
+            if (lastNumberString.Contains("."))
             {
                 // Do nothing
             }
             else
             {
-                resultLabel.Content = $"{resultLabel.Content}.";
+                if (lastNumberString == "")
+                {
+                    lastNumberString += "0.".ToString();
+                    resultLabelExp.Content += "0.".ToString();
+                }
+                else
+                {
+                    lastNumberString += ".".ToString();
+                    resultLabelExp.Content += ".".ToString();
+                }
+                    
+
             }
         }
 

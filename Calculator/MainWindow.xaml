@@ -134,7 +134,7 @@
                 Style="{StaticResource numberButtonsStyle}"
                 Content="."
                 Grid.Row="6"
-                Grid.Column="2" IsEnabled="False"/>
+                Grid.Column="2" IsEnabled="true"/>
         <Button x:Name="equalButton"
                 Style="{StaticResource operatorButtonsStyle}"
                 Content="="
