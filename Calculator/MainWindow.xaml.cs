@@ -21,19 +21,26 @@ namespace Calculator
     public partial class MainWindow : Window
     {
         double lastNumber;
-        string lastNumberString;
-        lastInputType lastInputType;
+        string lastNumberString, selectedValue;
+        LastInputType lastInputType;
         bool firstZero;
+        Button selectedBtn;
 
-        private void Init()
+        private void Init(bool isEqualPressed = false, bool isOperatorPressed = false)
         {
-            resultLabelExp.Content = "";
+
+            if (!isEqualPressed)
+                resultLabel.Content = "0";
+
+            if (!isOperatorPressed)
+                resultLabelExp.Content = "";
+
 
             // This reset is similar with after key in operator reset but without the above line
             firstZero = false;
             lastNumberString = "";
             lastNumber = 0;
-            lastInputType = lastInputType.Operator;
+            lastInputType = LastInputType.Operator;
         }
 
         public MainWindow()
@@ -50,12 +57,11 @@ namespace Calculator
 
         private void EqualButton_Click(object sender, RoutedEventArgs e)
         {
-            if (resultLabelExp.Content.ToString().Trim() != "" && lastInputType != lastInputType.Operator)
+            if (resultLabelExp.Content.ToString().Trim() != "" && lastInputType != LastInputType.Operator)
             {
                 resultLabel.Content = MathBodmas.EvalExpression(resultLabelExp.Content.ToString().ToCharArray()).ToString();
-                Init();
+                Init(true);
             }
-
         }
 
         private void PercentageButton_Click(object sender, RoutedEventArgs e)
@@ -77,50 +83,38 @@ namespace Calculator
         }
 
         private void AcButton_Click(object sender, RoutedEventArgs e)
-        {
-            resultLabelExp.Content = "";
-            resultLabel.Content = "0";
+        {            
             Init();
         }
 
         private void OperationButton_Click(object sender, RoutedEventArgs e)
         {
-            var operatorBtn = sender as Button;
-            var selectedValue = operatorBtn.Content.ToString();
+            selectedBtn = sender as Button;
+            selectedValue = selectedBtn.Content.ToString();
 
-            if (lastInputType == lastInputType.Operator)
+            if (lastInputType == LastInputType.Operator)
             {
                 if (resultLabelExp.Content.ToString() == "")
                 {
                     // Do nothing
                 }
                 else
-                {
-                    //// Extract whole string without last char using substring.
-                    //resultLabelExp.Content = resultLabelExp.Content.ToString().Substring(0, resultLabelExp.Content.ToString().Length - 1);
-
-                    //// Replace
-                    //resultLabelExp.Content += selectedValue;
-
+                {                    
                     ReplaceLastChar(selectedValue);
                 }
             }
             else
             {
                 AppendExp(selectedValue);
-                //resultLabelExp.Content = $"{resultLabelExp.Content}{operatorBtn.Content.ToString()}";                                
             }
-
-            lastInputType = lastInputType.Operator;
-            lastNumber = 0;
-            lastNumberString = "";
-            firstZero = false;
+            
+            Init(false, true);
         }
 
-        private void pointButton_Click(object sender, RoutedEventArgs e)
+        private void DecimalButton_Click(object sender, RoutedEventArgs e)
         {
-            var numberBtn = sender as Button;
-            var selectedValue = numberBtn.Content.ToString();
+            selectedBtn = sender as Button;
+            selectedValue = selectedBtn.Content.ToString();
 
             if (lastNumberString.Contains("."))
             {
@@ -144,26 +138,17 @@ namespace Calculator
 
         private void NumberButton_Click(object sender, RoutedEventArgs e)
         {
-            var numberBtn = sender as Button;
-            var selectedValue = numberBtn.Content.ToString();
+            selectedBtn = sender as Button;
+            selectedValue = selectedBtn.Content.ToString();
 
             switch (lastInputType)
             {
-                case lastInputType.Operator:
-                case lastInputType.Zero:
+                case LastInputType.Operator:
+                case LastInputType.Zero:
                     // firstZero value is assigned at Zero button click handler 
                     if (firstZero)
-                    {
-                        // Replace
-                        //lastNumberString = selectedValue;
-
-                        //// Extract whole string without last char using substring.
-                        //resultLabelExp.Content = resultLabelExp.Content.ToString().Substring(0, resultLabelExp.Content.ToString().Length - 1);
-
-                        //resultLabelExp.Content += lastNumberString;
-
+                    {                     
                         ReplaceLastChar(selectedValue);
-
                         firstZero = false;
                     }
                     else
@@ -173,7 +158,7 @@ namespace Calculator
                     }
 
                     break;
-                case lastInputType.Number:
+                case LastInputType.Number:
                     // Append
                     AppendExp(selectedValue);
 
@@ -181,13 +166,13 @@ namespace Calculator
                 default:
                     break;
             }
-            lastInputType = lastInputType.Number;
+            lastInputType = LastInputType.Number;
         }
 
         private void ZeroButton_Click(object sender, RoutedEventArgs e)
         {
-            var zeroButton = sender as Button;
-            var selectedValue = zeroButton.Content.ToString();
+            selectedBtn = sender as Button;
+            selectedValue = selectedBtn.Content.ToString();
 
             if (lastNumberString == "")
             {
@@ -209,7 +194,7 @@ namespace Calculator
                 AppendExp(selectedValue);
             }
 
-            lastInputType = lastInputType.Zero;
+            lastInputType = LastInputType.Zero;
         }
 
         private void AppendExp(string _selectedValue)
@@ -230,8 +215,7 @@ namespace Calculator
         }
     }
 
-
-    public enum lastInputType
+    public enum LastInputType
     {
         Zero, Number, Operator
     }
