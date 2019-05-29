@@ -27,7 +27,8 @@
                Content="0"
                HorizontalAlignment="Right"
                VerticalAlignment="Bottom"
-               Grid.ColumnSpan="4" FontSize="30"/>
+               Grid.ColumnSpan="4" FontSize="30"
+               Foreground="Gray"  />
         <Label x:Name="resultLabel"
                Content="0"
                HorizontalAlignment="Right"

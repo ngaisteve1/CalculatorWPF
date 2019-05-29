@@ -21,15 +21,18 @@ namespace Calculator
     public partial class MainWindow : Window
     {
         double lastNumber;
-        string lastNumberString;        
+        string lastNumberString;
         lastInputType lastInputType;
         bool firstZero;
 
         private void Init()
         {
-            firstZero = false;
             resultLabelExp.Content = "";
+
+            // This reset is similar with after key in operator reset but without the above line
+            firstZero = false;
             lastNumberString = "";
+            lastNumber = 0;
             lastInputType = lastInputType.Operator;
         }
 
@@ -47,8 +50,12 @@ namespace Calculator
 
         private void EqualButton_Click(object sender, RoutedEventArgs e)
         {
-            resultLabel.Content = MathBodmas.EvalExpression(resultLabelExp.Content.ToString().ToCharArray()).ToString();
-            Init();
+            if (resultLabelExp.Content.ToString().Trim() != "" && lastInputType != lastInputType.Operator)
+            {
+                resultLabel.Content = MathBodmas.EvalExpression(resultLabelExp.Content.ToString().ToCharArray()).ToString();
+                Init();
+            }
+
         }
 
         private void PercentageButton_Click(object sender, RoutedEventArgs e)
@@ -79,7 +86,31 @@ namespace Calculator
         private void OperationButton_Click(object sender, RoutedEventArgs e)
         {
             var operatorBtn = sender as Button;
-            resultLabelExp.Content = $"{resultLabelExp.Content}{operatorBtn.Content.ToString()}";
+            var selectedValue = operatorBtn.Content.ToString();
+
+            if (lastInputType == lastInputType.Operator)
+            {
+                if (resultLabelExp.Content.ToString() == "")
+                {
+                    // Do nothing
+                }
+                else
+                {
+                    //// Extract whole string without last char using substring.
+                    //resultLabelExp.Content = resultLabelExp.Content.ToString().Substring(0, resultLabelExp.Content.ToString().Length - 1);
+
+                    //// Replace
+                    //resultLabelExp.Content += selectedValue;
+
+                    ReplaceLastChar(selectedValue);
+                }
+            }
+            else
+            {
+                AppendExp(selectedValue);
+                //resultLabelExp.Content = $"{resultLabelExp.Content}{operatorBtn.Content.ToString()}";                                
+            }
+
             lastInputType = lastInputType.Operator;
             lastNumber = 0;
             lastNumberString = "";
@@ -88,6 +119,9 @@ namespace Calculator
 
         private void pointButton_Click(object sender, RoutedEventArgs e)
         {
+            var numberBtn = sender as Button;
+            var selectedValue = numberBtn.Content.ToString();
+
             if (lastNumberString.Contains("."))
             {
                 // Do nothing
@@ -101,113 +135,101 @@ namespace Calculator
                 }
                 else
                 {
-                    lastNumberString += ".".ToString();
-                    resultLabelExp.Content += ".".ToString();
+                    // Append
+                    AppendExp(selectedValue);                    
                 }
-                    
-
             }
+            firstZero = false;
         }
 
         private void NumberButton_Click(object sender, RoutedEventArgs e)
         {
             var numberBtn = sender as Button;
-
             var selectedValue = numberBtn.Content.ToString();
 
             switch (lastInputType)
             {
                 case lastInputType.Operator:
                 case lastInputType.Zero:
-                    if(lastNumberString == "0")
+                    // firstZero value is assigned at Zero button click handler 
+                    if (firstZero)
                     {
+                        // Replace
+                        //lastNumberString = selectedValue;
 
-                        // Special checking for the first lastNumberString
-                        if(firstZero)
-                        {
-                            // Replace
-                            lastNumberString = selectedValue;
+                        //// Extract whole string without last char using substring.
+                        //resultLabelExp.Content = resultLabelExp.Content.ToString().Substring(0, resultLabelExp.Content.ToString().Length - 1);
 
-                            // Extract whole string without last char using substring.
-                            resultLabelExp.Content = resultLabelExp.Content.ToString().Substring(0, resultLabelExp.Content.ToString().Length - 1);
+                        //resultLabelExp.Content += lastNumberString;
 
-                            resultLabelExp.Content += lastNumberString;
-                            
-                            
-                            firstZero = false;
-                        }
-                        else
-                        {
-                            // Append
-                            resultLabelExp.Content += lastNumberString;
-                        }
-                        
+                        ReplaceLastChar(selectedValue);
+
+                        firstZero = false;
                     }
                     else
                     {
                         // Append
-                        lastNumberString += selectedValue;
-                        resultLabelExp.Content += selectedValue;
+                        AppendExp(selectedValue);
                     }
 
                     break;
                 case lastInputType.Number:
                     // Append
-                    lastNumber += Convert.ToDouble(selectedValue);
-                    resultLabelExp.Content = $"{resultLabelExp.Content}{selectedValue}";
-                    lastInputType = lastInputType.Number;
+                    AppendExp(selectedValue);
+
                     break;
-                
-                
                 default:
                     break;
             }
-
+            lastInputType = lastInputType.Number;
         }
 
         private void ZeroButton_Click(object sender, RoutedEventArgs e)
         {
             var zeroButton = sender as Button;
             var selectedValue = zeroButton.Content.ToString();
-            
-            // If lastNumber is firstZero, do nothing
+
             if (lastNumberString == "")
             {
-                lastNumberString = "0";
-                resultLabelExp.Content += 0.ToString();
+                // First zero assigned                
+                AppendExp(selectedValue);
+
                 firstZero = true;
                 // Do nothing
             }
-            else if (lastNumberString.Length == 1 && lastNumberString == "0"){
+            else if (lastNumberString.Length == 1 && lastNumberString == "0")
+            {
+                firstZero = true;
                 // Do nothing
+                // To block 00
             }
             else
             {
-                switch (lastInputType)
-                {
-                    case lastInputType.Zero:
-                        //// Append
-                        resultLabelExp.Content += 0.ToString();
-                        //firstZero = true;
-                        break;
-                    case lastInputType.Number:
-                        lastNumberString += "0";
-                        // Append
-                        resultLabelExp.Content += selectedValue.ToString();
-                        break;
-                    case lastInputType.Operator:
-                        // Append
-                        resultLabelExp.Content += selectedValue.ToString();
-                        break;
-                    default:
-                        break;
-                }
-                
+                // Append. i.e. 100
+                AppendExp(selectedValue);
             }
 
             lastInputType = lastInputType.Zero;
         }
+
+        private void AppendExp(string _selectedValue)
+        {
+            lastNumberString += _selectedValue.ToString();
+            resultLabelExp.Content += _selectedValue.ToString();
+        }
+
+        private void ReplaceLastChar(string _selectedValue)
+        {
+            // Replace
+            lastNumberString = _selectedValue;
+
+            // Extract whole string without last char using substring.
+            resultLabelExp.Content = resultLabelExp.Content.ToString().Substring(0, resultLabelExp.Content.ToString().Length - 1);
+
+            resultLabelExp.Content += lastNumberString;
+        }
     }
+
 
     public enum lastInputType
     {
