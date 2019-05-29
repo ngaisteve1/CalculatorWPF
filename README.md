@@ -16,8 +16,10 @@ First Simple Calculator with WPF
 - [ ] Percentage key
 - [ ] Positive / Negative key
 - [ ] Back key
+- [ ] Press double equal to repeat the last operation
 
 ### Coding Techniques:
+- LinkedList
 - Reference parameter
 - ASCII code
 - enum
@@ -27,11 +29,6 @@ First Simple Calculator with WPF
 - App.xml ("external styles")
 
 ### Known Bugs
-- Press equal multiple times.
-
-### Future Enhancement
-- code refactoring
-- back 
 
 ### Other Versions
 - [Calculator with Javascript](https://github.com/ngaisteve1/Calculator)
