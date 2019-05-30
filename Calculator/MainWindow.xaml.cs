@@ -26,13 +26,12 @@ namespace Calculator
         bool firstZero, lastInputIsOperator;
         Button selectedBtn;
 
-        private void Init(bool isEqualPressed = false, bool isOperatorPressed = false)
+        private void Init(bool isEqualPressed = false)
         {
-
             if (!isEqualPressed)
                 resultLabel.Content = "0";
 
-            if (!isOperatorPressed)
+            if (!lastInputIsOperator)
                 resultLabelExp.Content = "";
 
 
@@ -105,8 +104,9 @@ namespace Calculator
                 // 1 -> 1+
                 AppendExp(selectedValue);
             }
-            
-            Init(false, true);
+
+            lastInputIsOperator = true;
+            Init(false);
         }
 
         private void DecimalButton_Click(object sender, RoutedEventArgs e)
