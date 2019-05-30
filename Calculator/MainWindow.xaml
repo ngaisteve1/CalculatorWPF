@@ -125,7 +125,7 @@
                 Grid.Row="5"
                 Grid.Column="3"/>
         <Button x:Name="zeroButton"
-                Click="ZeroButton_Click"
+                Click="NumberButton_Click"
                 Style="{StaticResource numberButtonsStyle}"
                 Content="0"
                 Grid.Row="6"

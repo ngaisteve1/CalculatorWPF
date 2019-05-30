@@ -136,11 +136,28 @@ namespace Calculator
             selectedBtn = sender as Button;
             selectedValue = selectedBtn.Content.ToString();
 
-            if (firstZero)
+            if (string.IsNullOrEmpty(lastNumberString))
             {
-                // 0 -> 1
-                ReplaceLastChar(selectedValue);
-                firstZero = false;
+                if(selectedValue == "0")
+                {
+                    // '' -> 0
+                    AppendExp(selectedValue);
+
+                    firstZero = true;
+                }
+                else
+                {
+                    // '' -> 1
+                    AppendExp(selectedValue);
+                }
+            } else if (firstZero)
+            {
+                if (selectedValue != "0")
+                {
+                    // 0 -> 1
+                    ReplaceLastChar(selectedValue);
+                    firstZero = false;
+                }                    
             }
             else
             {
@@ -151,27 +168,27 @@ namespace Calculator
             lastInputIsOperator = false;
         }
 
-        private void ZeroButton_Click(object sender, RoutedEventArgs e)
-        {
-            selectedBtn = sender as Button;
-            selectedValue = selectedBtn.Content.ToString();
+        //private void ZeroButton_Click(object sender, RoutedEventArgs e)
+        //{
+        //    selectedBtn = sender as Button;
+        //    selectedValue = selectedBtn.Content.ToString();
 
-            if (lastInputIsOperator)
-            {
-                // First zero assigned here    
-                // '' -> 0
-                AppendExp(selectedValue);
+        //    if (lastInputIsOperator)
+        //    {
+        //        // First zero assigned here    
+        //        // '' -> 0
+        //        AppendExp(selectedValue);
 
-                firstZero = true;
-            }
-            else if (!firstZero)
-            { 
-                // 1 -> 10
-                AppendExp(selectedValue);
-            }
+        //        firstZero = true;
+        //    }
+        //    else if (!firstZero)
+        //    { 
+        //        // 1 -> 10
+        //        AppendExp(selectedValue);
+        //    }
 
-            lastInputIsOperator = false;         
-        }
+        //    lastInputIsOperator = false;         
+        //}
 
         private void AppendExp(string _selectedValue)
         {
