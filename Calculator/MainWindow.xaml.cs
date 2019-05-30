@@ -22,7 +22,7 @@ namespace Calculator
     {
         double lastNumber;
         string lastNumberString, selectedValue;
-        Stack<string> expression = new Stack<string>();        
+        LinkedList<string> expression = new LinkedList<string>();        
         bool firstZero, lastInputIsOperator;
         Button selectedBtn;
 
@@ -57,7 +57,7 @@ namespace Calculator
 
         private void EqualButton_Click(object sender, RoutedEventArgs e)
         {
-            if (resultLabelExp.Content.ToString().Trim() != "" && lastInputIsOperator == false)
+            if (resultLabelExp.Content.ToString().Any() && lastInputIsOperator == false)
             {
                 resultLabel.Content = MathBodmas.EvalExpression(resultLabelExp.Content.ToString().ToCharArray()).ToString();
                 Init(true);
@@ -94,13 +94,15 @@ namespace Calculator
 
             if (lastInputIsOperator)
             {
-                if (resultLabelExp.Content.ToString().Any()) // resultLabelExp.Content.ToString() == ""
+                if (resultLabelExp.Content.ToString().Any()) 
                 {                    
+                    // 1+ -> 1-
                     ReplaceLastChar(selectedValue);
                 }
             }
             else
             {
+                // 1 -> 1+
                 AppendExp(selectedValue);
             }
             
@@ -114,13 +116,14 @@ namespace Calculator
 
             if (!lastNumberString.Contains("."))           
             {
-                if (!lastNumberString.Any()) //  lastNumberString == ""
+                if (string.IsNullOrEmpty(lastNumberString))
                 {
-                    lastNumberString += "0.";
-                    resultLabelExp.Content += "0.";
+                    // '' -> 0.
+                    AppendExp("0.");
                 }
                 else
                 {
+                    // 1 -> 1.
                     AppendExp(selectedValue);                    
                 }
             }
@@ -135,16 +138,17 @@ namespace Calculator
 
             if (firstZero)
             {
+                // 0 -> 1
                 ReplaceLastChar(selectedValue);
                 firstZero = false;
             }
             else
             {
+                // 10 -> 101
                 AppendExp(selectedValue);
             }
 
             lastInputIsOperator = false;
-            //lastInputType = LastInputType.Number;
         }
 
         private void ZeroButton_Click(object sender, RoutedEventArgs e)
@@ -154,14 +158,15 @@ namespace Calculator
 
             if (lastInputIsOperator)
             {
-                // First zero assigned here              
+                // First zero assigned here    
+                // '' -> 0
                 AppendExp(selectedValue);
 
                 firstZero = true;
-                // Do nothing
             }
             else if (!firstZero)
             { 
+                // 1 -> 10
                 AppendExp(selectedValue);
             }
 
@@ -170,19 +175,23 @@ namespace Calculator
 
         private void AppendExp(string _selectedValue)
         {
-            lastNumberString += _selectedValue.ToString();
-            resultLabelExp.Content += _selectedValue.ToString();
+            lastNumberString += _selectedValue;
+            expression.AddLast(_selectedValue);
+            //resultLabelExp.Content += _selectedValue;
+            //expression.Reverse();
+            resultLabelExp.Content = string.Join("", expression.ToArray());
         }
 
         private void ReplaceLastChar(string _selectedValue)
         {
-            // Replace
-            lastNumberString = _selectedValue;
+            //lastNumberString = _selectedValue;
 
             // Extract whole string minus last char using substring.
-            resultLabelExp.Content = resultLabelExp.Content.ToString().Substring(0, resultLabelExp.Content.ToString().Length - 1);
+            //resultLabelExp.Content = resultLabelExp.Content.ToString().Substring(0, resultLabelExp.Content.ToString().Length - 1);
+            // resultLabelExp.Content += lastNumberString;
 
-            resultLabelExp.Content += lastNumberString;
+            expression.RemoveLast();
+            AppendExp(_selectedValue);
         }
     }
 }
