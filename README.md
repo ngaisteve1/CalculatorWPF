@@ -28,7 +28,8 @@ First Simple Calculator with WPF
 - Grid panel (XAML)
 - App.xml ("external styles")
 
-### Known Bugs
+### Future Enhancement
+- To implement MVVM
 
 ### Other Versions
 - [Calculator with Javascript](https://github.com/ngaisteve1/Calculator)
