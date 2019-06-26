@@ -32,8 +32,10 @@ namespace Calculator
                 resultLabel.Content = "0";
 
             if (!lastInputIsOperator)
+            {
                 resultLabelExp.Content = "";
-
+                expression.Clear();
+            }
 
             // This reset is similar with after key in operator reset but without the above line
             firstZero = false;
